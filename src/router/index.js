@@ -6,13 +6,30 @@ Vue.use(Router);
 export default new Router({
     routes: [
         {
-            path: '/',
-            redirect: '/dashboard'
+            path:'/',
+            redirect: '/deptIntroduction',
         },
         {
-            path: '/',
-            component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
-            meta: { title: '自述文件' },
+            path:'/',
+            component: () => import('../components/common/Home-02.vue'),
+            meta: {title: '用户展示页'},
+            children:[
+                {
+                    path:'/firstPage',
+                    component: () => import('../components/userPage/FirstPage.vue'),
+                    meta: {title: '首页'}
+                },
+                {
+                    path:'/deptIntroduction',
+                    component: () => import('../components/userPage/deptIntroduction.vue'),
+                    meta: {title: '科室详情页'}
+                }
+            ]
+        },
+        {
+            path: '/manage',
+            component: () => import(/* webpackChunkName: "home" */ '../components/common/Home-01.vue'),
+            meta: { title: '后台' },
             children: [
                 {
                     path: '/dashboard',
@@ -28,6 +45,16 @@ export default new Router({
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }
+                },
+                {
+                    path: '/arrangeSchedule',
+                    component: () => import('../components/page/ArrangeSchedule.vue'),
+                    meta: {title: '排班管理'},
+                },
+                {
+                    path: '/arrangeScheduleDetail',
+                    component: () => import('../components/page/ArrangeScheduleDetail.vue'),
+                    meta: {title: '排班'}
                 },
                 {
                     path: '/tabs',

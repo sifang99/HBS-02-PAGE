@@ -1,0 +1,28 @@
+.dark-bule{
+    background-color: #6699CC;
+}
+.light-bule-rgba{
+    background-color: rgba(153,204,255,0.8);
+}
+.light-blue{
+    background-color: #99ccff;
+}
+.light-green{
+background-color: #CCFFFF;
+}
+.border-color{
+    background-color: rgba(204,204,204,0.2);
+}
+
+.my-box-shadow{
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+
+.el-icon-arrow-right{
+    color: rgba(204,204,204,0.7);
+}
+
+.el-icon-message-solid{
+    color: rgba(0,0,0,0.6);
+}
