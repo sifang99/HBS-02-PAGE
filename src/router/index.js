@@ -20,9 +20,23 @@ export default new Router({
                     meta: {title: '首页'}
                 },
                 {
-                    path:'/deptIntroduction',
+                    path:'/',
                     component: () => import('../components/userPage/deptIntroduction.vue'),
-                    meta: {title: '科室详情页'}
+                    meta: {title: '科室详情页'},
+                    children:[
+                        {
+                            path:'/deptIntroduction',
+                            component: () => import('../components/userPage/expertListPage.vue'),
+                        },
+                        {
+                            path:'/orderPage',
+                            component: () => import('../components/userPage/orderPage.vue')
+                        },
+                        {
+                            path: '/expertDetail',
+                            component: () => import('../components/userPage/expertDetail.vue')
+                        }
+                    ]
                 }
             ]
         },

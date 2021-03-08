@@ -4,9 +4,9 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
                     <i class="el-icon-lx-cascades"></i> 排班
-                    <label style="margin-left:20px;"> 医生编号：XXXX </label>
-                    <label style="margin-left:20px;"> 医生姓名：XXXX </label>
-                    <label style="margin-left:20px;"> 科室：XXXXXXXX </label>
+                    <label style="margin-left:20px;"> 医生编号：{{doctorNum}} </label>
+                    <label style="margin-left:20px;"> 医生姓名：{{doctorName}} </label>
+                    <label style="margin-left:20px;"> 科室：{{deptName}} </label>
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -19,11 +19,15 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
             >
-                <el-table-column prop="date" label="日期" width="200" align="center"></el-table-column>
-                <el-table-column prop="time" label="时间" width="100" align="center"></el-table-column>
+                <el-table-column prop="numberDate" label="日期" width="100" align="center"></el-table-column>
+                <el-table-column label="地址" width="300" align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.place}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="排班设置" align="center">
                     <template slot-scope="scope">
-                        就诊时间从{{scope.row.startTime}}至{{scope.row.endTime}},间隔{{scope.row.interval}}分钟。
+                        就诊时间从{{scope.row.startTime}}至{{scope.row.endTime}},间隔{{scope.row.timeInterval}}分钟。
                         总共开放{{scope.row.total}}个号源。挂号费：￥{{scope.row.fee}}
                     </template>
                 </el-table-column>
@@ -50,20 +54,14 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="添加排班" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" :rules="rule" label-width="70px">
-                <el-form-item label="日期" prop="date">
+                <el-form-item label="日期" prop="numberDate">
                     <el-date-picker
                             type="date"
                             placeholder="选择日期"
-                            v-model="form.date"
+                            v-model="form.numberDate"
                             value-format="yyyy-MM-dd"
                             style="width: 100%;"
                         ></el-date-picker>
-                </el-form-item>
-                <el-form-item label="上/下午" prop="time">
-                    <el-select v-model="form.time" placeholder="请选择">
-                        <el-option key="上午" label="上午" value="上午"></el-option>
-                        <el-option key="下午" label="下午" value="下午"></el-option>
-                    </el-select>
                 </el-form-item>
                 <el-form-item label="开始" prop="startTime">
                     <el-time-picker
@@ -81,19 +79,23 @@
                             style="width: 100%;"
                         ></el-time-picker>
                 </el-form-item>
-                <el-form-item label="间隔" prop="interval">
-                    <el-input v-model="form.interval"></el-input>
+                <el-form-item label="号源数" prop="total">
+                    <el-input v-model.number="form.total"></el-input>
+                </el-form-item>
+                <el-form-item label="间隔" prop="timeInterval">
+                    <el-input v-model.number="form.timeInterval"></el-input>
                 </el-form-item>
                 <el-form-item label="费用" prop="fee">
-                    <el-input v-model="form.fee"></el-input>
+                    <el-input v-model.number="form.fee"></el-input>
                 </el-form-item>
-                <el-form-item label="地点" prop="address">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="地点" prop="place">
+                    <el-input v-model="form.place"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
+                <el-button v-show="! isUpdate" type="primary" @click="saveEdit">确 定</el-button>
+                <el-button v-show="isUpdate" type="primary" @click="modify">修 改</el-button>
             </span>
         </el-dialog>
     </div>
@@ -102,6 +104,7 @@
 <script>
 export default {
     name: 'arrangeScheduleDetail',
+    props:['doctorMessage'],
     data() {
         //自定义检验规则
         var validateEndTime = (rule, value, callback) => {
@@ -112,78 +115,102 @@ export default {
             }
         }
         return {
-           tableData:[
-               {
-                   date:'2021-03-03',
-                   time:'上午',
-                   startTime:'8:30',
-                   endTime:'11:00',
-                   interval:10,
-                   total:60,
-                   fee:0
-               }
-           ],
+            doctorNum:this.doctorMessage.doctorNum,
+            doctorName:this.doctorMessage.doctorName,
+            deptName:this.doctorMessage.deptName,
+            dept:this.doctorMessage.deptId.toString(),
+           tableData:[],
+           isUpdate:false,//标记弹出框是添加还是修改
+           updateIndex:'',//被修改的对象的索引
            form:{
-                date:'',
-                time:'',
+                numberDate:'',
                 startTime:'',
                 endTime:'',
-                interval:'',
-                address:'',
+                timeInterval:'',
+                place:'',
                 fee:'',
+                total:''
            },
            editVisible:false,
            rule:{
-               date:[
+               numberDate:[
                    {required:true, message:'请选择日期',trigger:'blur'},
-               ],
-               time:[
-                   {required: true, message: '请选择时间段', trigger: 'blur'}
                ],
                startTime:[
                    {required: true, message: '请选择开始时间', trigger: 'blur'}
                ],
                endTime:[
-                   {required: true, message: '请选择结束时间',trigger: 'blur'},
-                   {validator: validateEndTime, trigger: 'blur'}
+                   {required: true, message: '请选择结束时间',trigger: 'blur'}
                ],
-               interval:[
-                   {required: true, message: '请输入时间间隔', trigger: 'blur'}
+               timeInterval:[
+                   {required: true, message: '请输入时间间隔', trigger: 'blur'},
+                   {type: 'number',  message: '请输入整数'}
                ],
                fee:[
-                   {required: true, message: '请输入挂号费用', trigger: 'blur'}
+                   {required: true, message: '请输入挂号费用', trigger: 'blur'},
+                   {type:'number',  message: '请输入整数', trigger: 'blur'}
                ],
-               address:[
+               place:[
                    {required: true, message: '请输入就诊地点', trigger: 'blur'}
+               ],
+               total:[
+                   {required: true, message: '请输入总号源数', trigger: 'blur'},
+                   {type:'number', message: '请输入整数', trigger: 'blur'}
                ]
            },
            
         };
     },
     methods: {
+        modify(){
+            this.getValue(this.tableData[this.updateIndex], this.form)
+            this.editVisible = false
+            this.isUpdate = false
+            this.clearForm()
+            this.updateIndex = ''
+        },
         addSchedule(){
             this.editVisible = true;
         },
         modifySchedule(index, row){
-
+            this.getValue(this.form, row)
+            this.editVisible = true
+            this.isUpdate = true
+            this.updateIndex = index
         },
         deleteSchedule(index, row){
-
+            this.tableData.splice(index, 1)
+            console.log("index:"+index)
+            console.log(this.tableData)
         },
         submitSchedule(){
-
+            var data = {
+                dept:this.dept,
+                doctorNum: this.doctorNum,
+                schedules: this.tableData
+            }
+            this.$axios.post('/addNumberMessage', data)
+            .then((response) => {
+                if(response.data.isSuccess == 0){
+                    this.$message("添加成功！")
+                }else{
+                    this.$message("添加失败！")
+                }
+            }).catch((error) => {
+                this.$message("发生错误！")
+            })
         },
         saveEdit(){
             this.$refs['form'].validate((valide) => {
                 if(valide){
                     var formData = {
-                        date:'',
-                        time:'',
+                        numberDate:'',
                         startTime:'',
                         endTime:'',
-                        interval:'',
-                        address:'',
+                        timeInterval:'',
+                        place:'',
                         fee:'',
+                        total:''
                     }
                     this.getValue(formData, this.form)
                     this.tableData.push(formData)
@@ -197,6 +224,8 @@ export default {
         cancel(){
             this.clearForm()
             this.editVisible=false
+            this.isUpdate = false
+            this.isUpdate = ''
         },
 
         //辅助函数
@@ -206,6 +235,10 @@ export default {
             var b = endTime.split(":")
             let startMin = a[0]*60 + a[1]
             let endMin = b[0]*60 + b[1]
+            console.log("a:"+a)
+            console.log("b:"+b)
+            console.log("startMin:"+startMin)
+            console.log("endMin:"+endMin)
             if(endMin > startMin){
                 return true
             }else{
@@ -214,24 +247,24 @@ export default {
         },
         //将b的值赋给a
         getValue(a, b){
-            a.date = b.date;
-            a.time = b.time;
+            a.numberDate = b.numberDate;
             a.startTime = b.startTime;
             a.endTime = b.endTime;
-            a.interval = b.interval;
-            a.address = b.address;
-            a.fee = b.fee
+            a.timeInterval = b.timeInterval;
+            a.place = b.place;
+            a.fee = b.fee;
+            a.total = b.total
         },
 
         //清空表单中的值
         clearForm(){
-            this.form.date='',
-            this.form.time='',
+            this.form.numberDate='',
             this.form.startTime='',
             this.form.endTime='',
-            this.form.interval='',
-            this.form.address=''
+            this.form.timeInterval='',
+            this.form.place=''
             this.form.fee=''
+            this.form.total=''
         }
     }
 };

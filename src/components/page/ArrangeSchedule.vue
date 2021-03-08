@@ -9,9 +9,18 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-select v-model="dept" placeholder="科室" class="handle-select mr10">
-                    <el-option key="1" label="内科" value="内科"></el-option>
-                    <el-option key="2" label="外科" value="外科"></el-option>
+                 <el-select  v-model="deptId" placeholder="请选择" value-key="index">
+                    <el-option-group
+                    v-for="dept in deptList"
+                    :key="dept.id"
+                    :label="dept.name">
+                        <el-option
+                        v-for="(item, i) in dept.affiliation"
+                        :key="i"
+                        :label="item.name"
+                        :value="item.id">
+                        </el-option>
+                    </el-option-group>
                 </el-select>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
@@ -25,7 +34,7 @@
                 <el-table-column type="index" label="序号" width="100" align="center"></el-table-column>
                 <el-table-column prop="num" label="编号" align="center"></el-table-column>
                 <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-                <el-table-column prop="dept" label="科室" align="center"></el-table-column>
+                <el-table-column prop="position" label="职称" align="center"></el-table-column>
                 <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
                         <el-tag
@@ -42,6 +51,11 @@
                             @click="arrangeSchedule(scope.$index, scope.row)"
                         >去排班</el-button>
                         <el-button
+                            type="text"
+                            icon="el-icon-edit"
+                            @click="arrangeSchedule(scope.$index, scope.row)"
+                        >去排班</el-button>
+                        <el-button
                             v-show="scope.row.state === '已排班'"
                             type="text"
                             icon="el-icon-edit"
@@ -50,7 +64,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="pagination">
+            <!-- <div class="pagination">
                 <el-pagination
                     background
                     layout="total, prev, pager, next"
@@ -59,7 +73,7 @@
                     :total="pageTotal"
                     @current-change="handlePageChange"
                 ></el-pagination>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -69,21 +83,10 @@ export default {
     name: 'arrangeSchedule',
     data() {
         return {
-            dept:"",
-            tableData: [
-                {
-                    num:'2017110405',
-                    name:'代美华',
-                    dept:'内科',
-                    state:'已排班'
-                },
-                {
-                    num:'2017110404',
-                    name:'张三',
-                    dept:'内科',
-                    state:'未排班'
-                }
-            ],
+            deptList:[],
+            deptId:'',
+            deptName:'',
+            tableData: [],
             editVisible: false,
             pageTotal: 0,
             pageSize: 10,
@@ -96,9 +99,31 @@ export default {
     methods: {
         // 触发搜索按钮
         handleSearch() {
+            this.$axios.get('/getDoctorsByDept',{params: {dept:this.deptId}
+            }).then((response) => {
+                console.log(response.data)
+                this.tableData = response.data
+            }).catch((error) => {
+                console.log("获取医生失败！")
+            })
+            this.$axios.get('/Dept/getDeptById',{params:{id:this.deptId}})
+            .then((response) => {
+                console.log(response.data)
+                this.deptName = response.data.name
+                console.log(this.deptName)
+            }).catch((error) => {
+                console.log("获取科室名称失败！")
+            })
         },
         // 添加排班信息
         arrangeSchedule(index, row) {
+            var doctorMessage={
+                doctorNum: row.num,
+                doctorName: row.name,
+                deptName: this.deptName,
+                deptId: this.deptId
+            }
+            this.$emit('getDoctorMessage',doctorMessage);
             this.$router.push('/arrangeScheduleDetail');
         },
         //查看排班信息
@@ -107,7 +132,24 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
+        },
+        //辅助函数
+        //通过科室id获取科室名称
+        getDeptNameById(){
+
         }
+    },
+    created(){
+        this.$axios({
+            method:'get',
+            url:'/Dept/getAllDepts'
+        }).then((response) => {
+            // console.log(response.data)
+            this.deptList = response.data
+            console.log(this.deptList)
+        }).catch((error) => {
+            console.log("获取科室列表失败！")
+        })
     }
 };
 </script>

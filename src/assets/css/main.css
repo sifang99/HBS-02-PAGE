@@ -20,6 +20,10 @@ a {
     text-decoration: none
 }
 
+.my-letter-style{
+    line-height: 1.8em;
+    letter-spacing: 0.1em;
+}
 
 .content-box {
     position: absolute;

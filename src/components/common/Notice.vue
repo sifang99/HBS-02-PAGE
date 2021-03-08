@@ -8,7 +8,7 @@
               class="list ul-blackground"
               v-infinite-scroll="load"
               infinite-scroll-disabled="disabled">
-                <li v-for="i in count" class="item-background list-item">
+                <li v-for="(i, index) in count" class="item-background list-item" :key="index">
                     <i class="item-img el-icon-message-solid"></i>
                     <div :title="i.title" class="item-title-wrapper">
                       <p class="item-title">{{ i.title }}</p>
