@@ -7,7 +7,7 @@
                 <v-login></v-login>
             </div>
             <div class="right-content">
-                <router-view></router-view>
+                <router-view :deptMessage="dept" @getDept="getDeptMessage"></router-view>
             </div>
             <div style="clear: both;"></div>
         </div>
@@ -26,6 +26,17 @@ export default{
         vNotice,
         vLogin,
         vFooter,
+    },
+    data(){
+        return{
+            dept:''
+        }
+    },
+    methods:{
+        getDeptMessage(dept){
+            this.dept = dept
+            console.log(this.dept)
+        }
     }
 }
 </script>

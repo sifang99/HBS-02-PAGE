@@ -7,8 +7,8 @@
                 <img class="photo"  v-show="doctor.gender === 1" src="../../assets/img/doctor-male-02.png" >
                 <div class="expert-massage">
                     <p class="expert-message-item">姓名： {{doctor.name}}</p>
-                    <p class="expert-message-item">年龄： {{doctor.age}}</p>
                     <p class="expert-message-item">职称： {{doctor.position}}</p>
+                    <p class="expert-message-item">出生日期： {{doctor.birth}}</p>
                 </div>
                 <div style="clear:left;"></div>
             </div>
@@ -35,8 +35,11 @@
 
 <script>
 export default {
+    props:['deptId'],
     data(){
         return{
+            doctorNum:this.$route.query.doctorNum,
+            dept:this.deptId,
             doctor:{
                     name:'唐二',
                     position:'主治医生',
@@ -74,6 +77,14 @@ export default {
 
             ]
         }
+    },
+    created(){
+        this.$axios.get('/getDoctorByNum', {params:{doctorNum: this.doctorNum}})
+        .then((response) => {
+            this.doctor = response.data
+        }).catch((error) => {
+            this.$message("获取医生详情失败！")
+        })
     }
 }
 </script>

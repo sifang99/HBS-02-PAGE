@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path:'/',
-            redirect: '/deptIntroduction',
+            redirect: '/firstPage',
         },
         {
             path:'/',
@@ -69,6 +69,16 @@ export default new Router({
                     path: '/arrangeScheduleDetail',
                     component: () => import('../components/page/ArrangeScheduleDetail.vue'),
                     meta: {title: '排班'}
+                },
+                {
+                    path: '/updateSchedule',
+                    component: () => import('../components/page/UpdateSchedule.vue'),
+                    meta: {title: '修改号源'}
+                },
+                {
+                    path: '/deleteSchedule',
+                    component: () => import('../components/page/DeleteSchedule.vue'),
+                    meta: {title: '删除号源'}
                 },
                 {
                     path: '/tabs',

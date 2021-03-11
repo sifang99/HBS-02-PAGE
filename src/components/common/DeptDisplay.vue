@@ -7,19 +7,23 @@
             <div class="line light-blue"></div>
         </div>
         <div class="dept-content">
-            <div v-for="item in depts">
+            <div v-for="(item, index) in depts" :key="index">
                 <div class="dept">
                     <div class="dept-header">
                         <span class="dept-name-01">{{item.name}}</span>
                     </div>
                     <div v-if="item.affiliation">
-                        <div class="dept-affiliation" v-for="dept in item.affiliation">
-                            <el-link type="primary" :underline="false" class="dept-name-02">{{dept.name}}</el-link>
+                        <div class="dept-affiliation" v-for="(dept,index) in item.affiliation" :key="index">
+                            <router-link :to="{path:'/deptIntroduction', query: {id:dept.id}}">
+                                <el-link type="primary" :underline="false" class="dept-name-02">{{dept.name}}</el-link>
+                            </router-link>
                         </div>
                     </div>
                     <div  v-else>
                         <div class="dept-affiliation">
-                            <el-link type="primary" :underline="false" class=" dept-name-02">{{item.name}}</el-link>
+                            <router-link :to="{path:'/deptIntroduction', query: {id:item.id}}">
+                                <el-link type="primary" :underline="false" class=" dept-name-02">{{item.name}}</el-link>
+                            </router-link>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -34,107 +38,19 @@
 export default{
     data(){
         return{
-            depts:[
-                {
-                    id:'',
-                    name:'内科',
-                    affiliation:[
-                        {
-                            id:'',
-                            name:'消化内科'
-                        },
-                        {
-                            id:'',
-                            name:'普通消化科'
-                        },
-                        {
-                            id:'',
-                            name:'心血管科'
-                        },
-                        {
-                            id:'',
-                            name:'血液内科'
-                        },
-                        {
-                            id:'',
-                            name:'肾脏内科'
-                        },
-                        {
-                            id:'',
-                            name:'内分泌科'
-                        },
-                        {
-                            id:'',
-                            name:'普通内科'
-                        }
-                    ]
-                },
-                {
-                    id:'',
-                    name:'全科门诊',
-                },
-                {
-                    id:'',
-                    name:'神经内科'
-                },
-                {
-                    id:'',
-                    name:'外科',
-                    affiliation:[
-                        {
-                            id:'',
-                            name:'普通外科'
-                        },
-                        {
-                            id:'',
-                            name:'骨科'
-                        },
-                        {
-                            id:'',
-                            name:'泌尿外科'
-                        },
-                        {
-                            id:'',
-                            name:'肝胆外科'
-                        },
-                        {
-                            id:'',
-                            name:'胸外科'
-                        },
-                        {
-                            id:'',
-                            name:'肠胃外科'
-                        }
-                    ]
-                },
-                {
-                    id:'',
-                    name:'妇产科',
-                    affiliation:[
-                        {
-                            id:'',
-                            name:'妇科'
-                        },
-                        {
-                            id:'',
-                            name:'产科'
-                        },
-                        {
-                            id:'',
-                            name:'复发性流产'
-                        },
-                        {
-                            id:'',
-                            name:'母乳喂养咨询'
-                        },
-                        {
-                            id:'',
-                            name:'分娩咨询'
-                        }
-                    ]
-                }
-            ]
+            depts:[],
+            
         }
+    },
+    methods: {
+    },
+    created(){
+        this.$axios.get('/Dept/getAllDepts')
+        .then((response) => {
+            this.depts=response.data
+        }).catch((error) => {
+            this.$message("发生错误！")
+        })
     }
 }
 </script>

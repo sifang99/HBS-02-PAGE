@@ -72,6 +72,21 @@ export default {
                     title: '排班管理'
                 },
                 {
+                    icon: 'el-icon-lx-calendar',
+                    index: '2',
+                    title: '号源管理',
+                    subs: [
+                        {
+                            index: 'deleteSchedule',
+                            title: '删除号源'
+                        },
+                        {
+                            index: 'updateSchedule',
+                            title: '修改号源'
+                        }
+                    ]
+                },
+                {
                     icon: 'el-icon-lx-copy',
                     index: 'tabs',
                     title: 'tab选项卡'

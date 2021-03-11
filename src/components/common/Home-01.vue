@@ -26,7 +26,7 @@ export default {
         return {
             tagsList: [],
             collapse: false,
-            doctorMessage:''
+            doctorMessage:'',
         };
     },
     methods:{

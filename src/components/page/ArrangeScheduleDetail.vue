@@ -189,7 +189,10 @@ export default {
                 doctorNum: this.doctorNum,
                 schedules: this.tableData
             }
-            this.$axios.post('/addNumberMessage', data)
+            if(this.tableData.length == 0){
+                this.$message("请添加数据！")
+            }else{
+                this.$axios.post('/addNumberMessage', data)
             .then((response) => {
                 if(response.data.isSuccess == 0){
                     this.$message("添加成功！")
@@ -199,6 +202,7 @@ export default {
             }).catch((error) => {
                 this.$message("发生错误！")
             })
+            }
         },
         saveEdit(){
             this.$refs['form'].validate((valide) => {
@@ -266,7 +270,7 @@ export default {
             this.form.fee=''
             this.form.total=''
         }
-    }
+    },
 };
 </script>
 

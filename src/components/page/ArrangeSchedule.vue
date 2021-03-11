@@ -38,29 +38,23 @@
                 <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
                         <el-tag
-                            :type="scope.row.state==='已排班'?'success':(scope.row.state==='未排班'?'danger':'')"
-                        >{{scope.row.state}}</el-tag>
+                            type="success"
+                            v-show="scope.row.state"
+                        >已排班</el-tag>
+                        <el-tag
+                            type="danger"
+                            v-show="!scope.row.state"
+                        >未排班</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
-                            v-show="scope.row.state === '未排班'"
+                            v-show="!scope.row.state"
                             type="text"
                             icon="el-icon-edit"
                             @click="arrangeSchedule(scope.$index, scope.row)"
                         >去排班</el-button>
-                        <el-button
-                            type="text"
-                            icon="el-icon-edit"
-                            @click="arrangeSchedule(scope.$index, scope.row)"
-                        >去排班</el-button>
-                        <el-button
-                            v-show="scope.row.state === '已排班'"
-                            type="text"
-                            icon="el-icon-edit"
-                            @click="checkSchedule(scope.$index, scope.row)"
-                        >查看</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -101,7 +95,6 @@ export default {
         handleSearch() {
             this.$axios.get('/getDoctorsByDept',{params: {dept:this.deptId}
             }).then((response) => {
-                console.log(response.data)
                 this.tableData = response.data
             }).catch((error) => {
                 console.log("获取医生失败！")
@@ -110,7 +103,6 @@ export default {
             .then((response) => {
                 console.log(response.data)
                 this.deptName = response.data.name
-                console.log(this.deptName)
             }).catch((error) => {
                 console.log("获取科室名称失败！")
             })
@@ -121,14 +113,10 @@ export default {
                 doctorNum: row.num,
                 doctorName: row.name,
                 deptName: this.deptName,
-                deptId: this.deptId
+                deptId: this.deptId,
             }
             this.$emit('getDoctorMessage',doctorMessage);
             this.$router.push('/arrangeScheduleDetail');
-        },
-        //查看排班信息
-        checkSchedule(index, row){
-
         },
         // 分页导航
         handlePageChange(val) {
@@ -146,7 +134,6 @@ export default {
         }).then((response) => {
             // console.log(response.data)
             this.deptList = response.data
-            console.log(this.deptList)
         }).catch((error) => {
             console.log("获取科室列表失败！")
         })

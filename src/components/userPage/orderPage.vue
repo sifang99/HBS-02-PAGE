@@ -27,14 +27,12 @@
 
 <script>
 export default {
+    props:['orderDate'],
     data(){
         return{
-            doctor:{
-                    name:'唐二',
-                    position:'主治医生',
-                    gender:1,
-                    speciality:'感冒发烧、头疼脑热'
-                },
+            doctorNum:this.$route.query.doctorNum,
+            date: this.orderDate,
+            doctor:{},
             fee:20,
             timeList:[
                 {
@@ -67,6 +65,14 @@ export default {
                 }
             ]
         }
+    },
+    created(){
+        this.$axios.get('/getDoctorByNum' , {params:{doctorNum: this.doctorNum}})
+        .then((response) => {
+            this.doctor = response.data
+        }).catch((error) => {
+            console.log("获取医生信息失败！")
+        })
     }
 }
 </script>
