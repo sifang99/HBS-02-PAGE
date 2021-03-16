@@ -63,11 +63,6 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-cascades',
-                    index: 'table',
-                    title: '基础表格'
-                },
-                {
-                    icon: 'el-icon-lx-cascades',
                     index: 'arrangeSchedule',
                     title: '排班管理'
                 },
@@ -95,6 +90,26 @@ export default {
                     icon: 'el-icon-s-grid',
                     index: 'deptManage',
                     title: '科室管理',
+                },
+                {
+                    icon: 'el-icon-lx-calendar',
+                    index: '9',
+                    title: '管理公告',
+                    subs: [
+                        {
+                            index: 'addNotice',
+                            title: '添加公告'
+                        },
+                        {
+                            index: 'deleteNotice',
+                            title: '删除公告'
+                        }
+                    ]
+                },
+                {
+                    icon: 'el-icon-lx-cascades',
+                    index: 'table',
+                    title: '基础表格'
                 },
                 {
                     icon: 'el-icon-lx-copy',

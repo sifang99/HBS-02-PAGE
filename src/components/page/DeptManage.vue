@@ -58,13 +58,13 @@
                     <el-input maxlength="20" placeholder="最多输入20个字符" v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item prop="introduction" label="简介">
-                    <el-input placeholder="最多输入500个字符" maxlength="500" type="textarea" :rows="4" v-model="form.introduction"></el-input>
+                    <el-input placeholder="最多输入500个字符" maxlength="500" type="textarea" :rows="8" v-model="form.introduction"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancel">取 消</el-button>
                 <el-button v-show="isUpdate" type="primary" @click="modify">修 改</el-button>
-                <el-button type="primary" @click="submit">添加</el-button>
+                <el-button v-show="!isUpdate" type="primary" @click="submit">添加</el-button>
             </span>
         </el-dialog>
         </div>
@@ -95,7 +95,19 @@ export default {
     },
     methods:{
         modify(){
-
+            this.$refs['form'].validate((valid) => {
+                if(valid){
+                    this.$axios.post('/Dept/updateDept',this.form)
+                    .then((response) => {
+                        this.$message(response.data.message)
+                        this.editVisible = false
+                        this.clearForm()
+                        this.getDeptList()
+                    }).catch((error) => {
+                        console.log("修改科室时发生错误！")
+                    })
+                }
+            })
         },
         cancel(){
             this.clearForm()
@@ -105,16 +117,22 @@ export default {
             this.editVisible = true
             this.deptId = data.id
             this.dept = data
+            this.isUpdate = false
         },
         edit(node, data){
-            console.log("node:")
-            console.log(node)
-            console.log("data:")
-            console.log(data)
+            this.editVisible = true
+            this.isUpdate = true
+            this.form = {
+                id:data.id,
+                name:data.name,
+                introduction:data.introduction,
+                affiliate:data.affiliate
+            }
         },
         addDept(){
             this.deptId = 0
             this.editVisible = true
+            this.isUpdate = false
         },
         submit(){
             this.$refs['form'].validate((valid) => {

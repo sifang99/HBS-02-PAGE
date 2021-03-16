@@ -85,6 +85,16 @@ export default new Router({
                     meta: {title: '科室管理'}
                 },
                 {
+                    path: '/addNotice',
+                    component: () => import('../components/page/AddNotice'),
+                    meta: {title: '添加公告'}
+                },
+                {
+                    path: '/deleteNotice',
+                    component: () => import('../components/page/DeleteNotice.vue'),
+                    meta: {title: '删除公告'}
+                },
+                {
                     path: '/arrangeSchedule',
                     component: () => import('../components/page/ArrangeSchedule.vue'),
                     meta: {title: '排班管理'},

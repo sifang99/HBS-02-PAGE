@@ -101,7 +101,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancel">取 消</el-button>
-                <el-button v-show="!isAdd" type="primary" @click="saveEdit">确 定</el-button>
+                <el-button v-show="!isAdd" type="primary" @click.native="saveEdit">确 定</el-button>
                 <el-button v-show="isAdd" type="primary" @click="submit">添加</el-button>
             </span>
         </el-dialog>
@@ -128,11 +128,19 @@ export default {
             tableData: [],
             editVisible: false,
             isAdd:false,
-            form: {},
+            form: {
+                num:'',
+                name:'',
+                gender:'',
+                birth:'',
+                position:'',
+                speciality:'',
+                introduction:'',
+                id:''
+            },
             rules:{
                 num:[
                     {required: true, message:"编号不能为空", trigger: 'blur'},
-                    {validator: checkNum, trigger: 'blur'}
                 ],
                 name:[
                     {required: true, message:"姓名不能为空", trigger: 'blur'}
@@ -218,6 +226,7 @@ export default {
         },
         handleEdit(index, row){
             this.editVisible = true
+            this.isAdd = false
             this.form = row
             if(row.gender === 0){
                 this.form.gender = '女'
