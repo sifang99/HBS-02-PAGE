@@ -18,8 +18,8 @@
             </div>
         </div>
         <p class="order-title">患 者 评 价</p>
-            <ul>
-                <li class="order-item" v-for="(item, index) in commentList"  :key="index">
+        <ul>
+            <li class="order-item" v-for="(item, index) in commentList"  :key="index">
                     <div class="comment-item">
                         <p class="comment-message">
                             <label v-show="item.name != null" class="comment-name">{{ item.name }}</label>
@@ -29,7 +29,7 @@
                         <p class="comment my-letter-style">{{item.comment}}</p>
                     </div>
                 </li>
-            </ul>
+        </ul>
     </div>
 </template>
 

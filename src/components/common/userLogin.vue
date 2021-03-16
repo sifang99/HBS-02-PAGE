@@ -42,6 +42,26 @@
 <script>
 export default{
     data(){
+        let checkTel = (rule, value, callback) => {
+            this.$axios.get('/getUserByTel', {params:{tel:value}})
+            .then((response) => {
+                if(response.data.isSuccess == 0){
+                    callback(new Error("该电话号码已注册！"))
+                }
+            }).catch((error) => {
+                console.log("发生错误！")
+            })
+        };
+        let checkNickname = (rule, value, callback) => {
+            this.$axios.get('/getUserByNickname', {params:{nickname: value}})
+            .then((response) => {
+                if(response.data.isSuccess == 0){
+                    callback(new Error("该昵称已存在！"))
+                }
+            }).catch((error) => {
+                console.log("发生错误！")
+            })
+        };
         return {
             editVisible:false,
             form:{
@@ -57,7 +77,8 @@ export default{
             rule:{
                nickname:[
                    {required:true, message:'请输入昵称',trigger:'blur'},
-                   {max:20, messaage:'昵称长度不能超过20', trigger:'blur'}
+                   {max:20, messaage:'昵称长度不能超过20', trigger:'blur'},
+                   {validator: checkNickname, trigger: 'blur'}
                ],
                tel:[
                     {required:true, message:'请输入电话号码', trigger:'blur'},
@@ -67,10 +88,11 @@ export default{
                         }else{
                             callback();
                         }
-                    }, trigger: 'blur'}
+                    }, trigger: 'blur'},
+                    {validator: checkTel, trigger: 'blur'}
                ],
                pwd:[
-                    {required: true, message:'请设置密码',trigger:'blur'},
+                    {required: true, message:'请输入密码',trigger:'blur'},
                     {pattern: /^(\w){12,20}$/,message: '只能输入12-20个字母、数字、下划线'}
                ],
                account:[

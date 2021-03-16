@@ -184,7 +184,9 @@ export default {
             console.log(this.tableData)
         },
         submitSchedule(){
-            var data = {
+            this.$refs['form'].validate((valid) => {
+                if(valid){
+                    var data = {
                 dept:this.dept,
                 doctorNum: this.doctorNum,
                 schedules: this.tableData
@@ -203,10 +205,12 @@ export default {
                 this.$message("发生错误！")
             })
             }
+                }
+            })
         },
         saveEdit(){
-            this.$refs['form'].validate((valide) => {
-                if(valide){
+            this.$refs['form'].validate((valid) => {
+                if(valid){
                     var formData = {
                         numberDate:'',
                         startTime:'',

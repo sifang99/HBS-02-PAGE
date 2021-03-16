@@ -1,18 +1,30 @@
 <template>
     <div class="dept-detail-box ">
-        <div class="dept-introduction-box my-box-shadow">
-            <p class="dept-title light-bule-rgba">科 室 详 情</p>
-            <div class="introduction-box">
-                <p class="introduction my-letter-style">{{this.dept.introduction}}</p>
-            </div>
-            <router-view :orderDate="date" @getDate="changeDate" :deptId="dept.id"></router-view>
+        <div class="right-bar">
+            <v-notice></v-notice>
+            <v-login></v-login>
         </div>
-        
+        <div class="left-content">
+            <div class="dept-introduction-box my-box-shadow">
+                <p class="dept-title light-bule-rgba">科 室 详 情</p>
+                <div class="introduction-box">
+                    <p class="introduction my-letter-style">{{this.dept.introduction}}</p>
+                </div>
+                <router-view :orderDate="date" @getDate="changeDate" :deptId="dept.id"></router-view>
+            </div>
+        </div>
+        <div style="clear: both;"></div> 
     </div>
 </template>
 
 <script>
+import vNotice from '../common/Notice.vue'
+import vLogin from '../common/userLogin.vue'
 export default {
+    components:{
+        vNotice,
+        vLogin,
+    },
     name:'deptIntroduction',
     data(){
         return{

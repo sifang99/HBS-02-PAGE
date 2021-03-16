@@ -20,6 +20,20 @@ export default new Router({
                     meta: {title: '首页'}
                 },
                 {
+                    path:'/userPage',
+                    component:() => import('../components/userPage/UserPage.vue'),
+                    children:[
+                        {
+                            path: '/orderRecord',
+                            component: () => import('../components/common/OrderRecord.vue'),
+                        },
+                        {
+                            path: '/patientManage',
+                            component: () => import('../components/common/PatientManage.vue')
+                        }
+                    ]
+                },
+                {
                     path:'/',
                     component: () => import('../components/userPage/deptIntroduction.vue'),
                     meta: {title: '科室详情页'},
@@ -35,9 +49,9 @@ export default new Router({
                         {
                             path: '/expertDetail',
                             component: () => import('../components/userPage/expertDetail.vue')
-                        }
+                        },
                     ]
-                }
+                },
             ]
         },
         {
@@ -59,6 +73,16 @@ export default new Router({
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }
+                },
+                {
+                    path: '/doctorManage',
+                    component: () => import('../components/page/DoctorManage.vue'),
+                    meta: {title: '医生管理'}
+                },
+                {
+                    path: '/deptManage',
+                    component: () => import('../components/page/DeptManage.vue'),
+                    meta: {title: '科室管理'}
                 },
                 {
                     path: '/arrangeSchedule',

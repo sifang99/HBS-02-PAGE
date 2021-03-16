@@ -88,6 +88,16 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-copy',
+                    index: 'doctorManage',
+                    title: '医生管理',
+                },
+                {
+                    icon: 'el-icon-s-grid',
+                    index: 'deptManage',
+                    title: '科室管理',
+                },
+                {
+                    icon: 'el-icon-lx-copy',
                     index: 'tabs',
                     title: 'tab选项卡'
                 },

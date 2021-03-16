@@ -1,0 +1,51 @@
+.right-bar{
+    width: 30%;
+    float: right;
+    
+}
+.left-content{
+    width: 65%;
+    margin-top: 15px;
+}
+
+.user-left-bar{
+    width: 20%;
+    float: left;   
+    margin-top: 20px; 
+    background-color: whitesmoke;
+}
+
+.user-right-content{
+    width: 77%;
+    /* height: 400px; */
+    float: left;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.record-item{
+    list-style: none;
+    padding-bottom: 10px;  
+    padding-top: 10px;  
+    border-bottom: 1.5px solid rgba(204,204,204,0.7);
+}
+.single{
+    float: left;
+    width: 40%;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.message-item{
+    display: block;
+    font-size: 12px;
+}
+
+.patient-avatar{
+    float: left;
+    margin-left: 10px;
+}
+.operation{
+    float: right;
+    margin-right: 30px;
+    margin-top: 10px;
+}
