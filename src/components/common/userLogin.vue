@@ -6,7 +6,7 @@
         <div class="login-content">
             <el-form  ref="form" style="width: 95%;" :rules="rule" :model="form" label-width="80px">
                 <el-form-item prop="account" label="账号：">
-                    <el-input placeholder="昵称 \ 电话号码" v-model="form.account"></el-input>
+                    <el-input maxlength="20" placeholder="昵称 \ 电话号码" v-model="form.account"></el-input>
                 </el-form-item>
                 <el-form-item prop="pwd" label="密码：">
                     <el-input type="password" v-model="form.pwd"></el-input>
@@ -41,26 +41,36 @@
 
 <script>
 export default{
+    inject:['reload'],
     data(){
         let checkTel = (rule, value, callback) => {
             this.$axios.get('/getUserByTel', {params:{tel:value}})
             .then((response) => {
                 if(response.data.isSuccess == 0){
                     callback(new Error("该电话号码已注册！"))
+                }else{
+                    callback()
                 }
             }).catch((error) => {
                 console.log("发生错误！")
             })
         };
         let checkNickname = (rule, value, callback) => {
-            this.$axios.get('/getUserByNickname', {params:{nickname: value}})
-            .then((response) => {
-                if(response.data.isSuccess == 0){
-                    callback(new Error("该昵称已存在！"))
-                }
-            }).catch((error) => {
-                console.log("发生错误！")
-            })
+            if(this.registerForm.nickname.length >20){
+                callback(new Error("昵称长度不能超过20"))
+            }else{
+                this.$axios.get('/getUserByNickname', {params:{nickname: value}})
+                .then((response) => {
+                    if(response.data.isSuccess == 0){
+                        callback(new Error("该昵称已存在！"))
+                    }else{
+                        callback()
+                    }
+                }).catch((error) => {
+                    console.log("发生错误！")
+                })
+            }
+            
         };
         return {
             editVisible:false,
@@ -68,7 +78,7 @@ export default{
                 account:"",
                 pwd:"",
             },
-            isLogin: false,
+            isLogin: sessionStorage.getItem("isLogin"),
             registerForm:{
                 nickname:'',
                 pwd:'',
@@ -77,7 +87,6 @@ export default{
             rule:{
                nickname:[
                    {required:true, message:'请输入昵称',trigger:'blur'},
-                   {max:20, messaage:'昵称长度不能超过20', trigger:'blur'},
                    {validator: checkNickname, trigger: 'blur'}
                ],
                tel:[
@@ -96,7 +105,7 @@ export default{
                     {pattern: /^(\w){12,20}$/,message: '只能输入12-20个字母、数字、下划线'}
                ],
                account:[
-                   {required: true, message:'请输入账号', trigger:'blur'}
+                   {required: true, message:'请输入账号', trigger:'blur'},
                ]
 
             },
@@ -107,11 +116,23 @@ export default{
         onSubmit(){
             this.$axios.post('/userLogin', this.form)
             .then((response) => {
-                if(response.data.isSuccess == 0){
-                    this.$message("登录成功！")
-                    this.isLogin = true
+                if(response.data.isLogin){
+                    this.$message.success(response.data.message)
+                    sessionStorage.setItem("isLogin",true)
+                    sessionStorage.setItem("userNickname", response.data.user.nickname)
+                    sessionStorage.setItem("userTel", response.data.user.tel)
+                    sessionStorage.setItem("userId", response.data.user.id)
+                    this.isLogin = sessionStorage.getItem("isLogin")
+                    this.$router.go(0);
+                    // console.log("response:")
+                    // console.log(response.data)
+                    // console.log("session:")
+                    // console.log(sessionStorage.getItem("userNickname"))
+                    // console.log(sessionStorage.getItem("userTel"))
+                    // console.log(sessionStorage.getItem("userId"))
+
                 }else{
-                    this.$message("登录失败！")
+                    this.$message(response.data.message)
                 }
                 this.form.account = ''
                 this.form.pwd = ''
@@ -120,7 +141,9 @@ export default{
             })
         },
         saveEdit(){
-            this.editVisible = false
+            this.$refs.registerForm.validate(async valid => {
+                if(valid){
+                    this.editVisible = false
             var data = {
                 id:'',
                 nickname: this.registerForm.nickname,
@@ -140,6 +163,8 @@ export default{
                 this.registerForm.tel = ''
             }).catch((error) => {
                 console.log("注册时出现错误")
+            })
+                }
             })
         },
         cancel(){

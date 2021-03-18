@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div>
+        <div class="toolbar-box">
             <span v-for="(item, index) in barList" 
             :key="index"
             class="menu-item"
@@ -51,6 +51,9 @@ export default {
 </script>
 
 <style scoped>
+.toolbar-box{
+    border: 1px solid #ddd;
+}
 .activeMenu{
     background-color: rgba(0, 0, 0, 0.1);
 }

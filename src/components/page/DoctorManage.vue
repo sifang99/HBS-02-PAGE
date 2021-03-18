@@ -117,6 +117,8 @@ export default {
             .then((response) => {
                 if(response.data){
                     callback(new Error("改编号已经注册！"))
+                }else{
+                    callback()
                 }
             }).catch((error) => {
                 console.log("发生错误！")

@@ -9,7 +9,7 @@
             </div>
             <div style="clear:both;"></div>
         </div>
-        <div class="tool-bar-box">
+        <div v-show="isLogin" class="tool-bar-box">
             <div class="tool-bar">
                 <span v-for="(item, index) in toolList" 
                 :key="item.title"  
@@ -36,7 +36,13 @@ export default {
                 {
                     title:"个人中心",
                 }
-            ]
+            ],
+            isLogin: sessionStorage.getItem("isLogin")
+        }
+    },
+    watch:{
+        isLogin:function(newVal, oldVal){
+            console.log("新值："+newVal + " 旧值："+oldVal)
         }
     },
     methods:{

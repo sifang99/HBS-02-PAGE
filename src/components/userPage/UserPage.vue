@@ -21,5 +21,6 @@ export default {
 <style scoped>
 .user-content-box{
     width: 100%;
+    min-height: 500px;
 }
 </style>
