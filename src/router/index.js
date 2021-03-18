@@ -30,6 +30,10 @@ export default new Router({
                         {
                             path: '/patientManage',
                             component: () => import('../components/common/PatientManage.vue')
+                        },
+                        {
+                            path: '/updatePassword',
+                            component: () => import('../components/common/UpdatePwd.vue')
                         }
                     ]
                 },

@@ -15,6 +15,8 @@ import vToolBar from '../common/UserToolBar.vue'
 export default {
     components:{
         vToolBar,
+    },
+    methods:{
     }
 }
 </script>

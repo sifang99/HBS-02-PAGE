@@ -9,7 +9,7 @@
             </div>
             <div style="clear:both;"></div>
         </div>
-        <div v-show="isLogin" class="tool-bar-box">
+        <div v-show="$store.state.isLogin" class="tool-bar-box">
             <div class="tool-bar">
                 <span v-for="(item, index) in toolList" 
                 :key="item.title"  
@@ -26,6 +26,7 @@
 
 <script>
 export default {
+    props:['Logout'],
     data(){
         return{
             currentIndex:0,
@@ -37,12 +38,12 @@ export default {
                     title:"个人中心",
                 }
             ],
-            isLogin: sessionStorage.getItem("isLogin")
+            login: sessionStorage.getItem("login") && !this.Logout,
         }
     },
     watch:{
-        isLogin:function(newVal, oldVal){
-            console.log("新值："+newVal + " 旧值："+oldVal)
+        login:function(){
+            console.login("header中login值的变化："+this.login)
         }
     },
     methods:{

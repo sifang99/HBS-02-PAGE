@@ -15,6 +15,15 @@
     background-color: whitesmoke;
 }
 
+.user-page-title-box{
+    height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+.user-page-title-box > p{
+    text-align: center;
+    padding-top: 10px;
+}
+
 .user-right-content{
     width: 77%;
     /* height: 400px; */

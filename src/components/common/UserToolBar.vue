@@ -44,6 +44,20 @@ export default {
                 this.$router.push('/orderRecord')
             }else if(this.barList[index].title === '就诊人管理'){
                 this.$router.push('/patientManage')
+            }else if(this.barList[index].title == '修改密码'){
+                this.$router.push('/updatePassword')
+            }else if(this.barList[index].title == '退出登录'){
+                this.$confirm('是否退出登录？','提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type:'warning'
+                }).then(() => {
+                    sessionStorage.clear()
+                    this.$store.commit('Logout')
+                    this.$router.push('/firstPage');
+                }).catch(() => {
+                    console.log("已取消退出登录")
+                })
             }
         }
     }

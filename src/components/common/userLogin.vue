@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!this.isLogin" class="login my-box-shadow">
+    <div v-if="!$store.state.isLogin" class="login my-box-shadow">
         <div class="title light-bule-rgba"> 
             <p class="title-text">登 录</p>
         </div>
@@ -41,7 +41,6 @@
 
 <script>
 export default{
-    inject:['reload'],
     data(){
         let checkTel = (rule, value, callback) => {
             this.$axios.get('/getUserByTel', {params:{tel:value}})
@@ -78,7 +77,7 @@ export default{
                 account:"",
                 pwd:"",
             },
-            isLogin: sessionStorage.getItem("isLogin"),
+            login: sessionStorage.getItem("login"),
             registerForm:{
                 nickname:'',
                 pwd:'',
@@ -118,19 +117,13 @@ export default{
             .then((response) => {
                 if(response.data.isLogin){
                     this.$message.success(response.data.message)
-                    sessionStorage.setItem("isLogin",true)
+                    sessionStorage.setItem("login", true)
                     sessionStorage.setItem("userNickname", response.data.user.nickname)
                     sessionStorage.setItem("userTel", response.data.user.tel)
                     sessionStorage.setItem("userId", response.data.user.id)
-                    this.isLogin = sessionStorage.getItem("isLogin")
-                    this.$router.go(0);
-                    // console.log("response:")
-                    // console.log(response.data)
-                    // console.log("session:")
-                    // console.log(sessionStorage.getItem("userNickname"))
-                    // console.log(sessionStorage.getItem("userTel"))
-                    // console.log(sessionStorage.getItem("userId"))
-
+                    // this.$router.go(0);
+                    this.login = sessionStorage.getItem("login")
+                    this.$store.commit('Login')
                 }else{
                     this.$message(response.data.message)
                 }

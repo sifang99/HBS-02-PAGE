@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="patient-manage-title-box">
+        <div class="user-page-title-box">
             <p>就诊人管理</p>
         </div>
         <ul>
@@ -154,19 +154,25 @@ export default {
     },
     methods:{
         deletePatient(patient, index){
-            console.log(patient)
-            console.log(index)
-            this.$axios.get('/deletePatient', {params:{account: patient.account}})
-            .then((response) => {
-                if(response.data.isSuccess == 0){
-                    this.patientList.splice(index)
-                    this.$message.success("删除成功！")
-                }else{
-                    this.$message("删除失败！")
-                }
-            }).catch((error) => {
-                console.log("删除就诊人时出现错误！")
-            })
+            this.$confirm('是否删除就诊人？','提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type:'warning'
+            }).then(() => {
+                this.$axios.get('/deletePatient', {params:{account: patient.account}})
+                .then((response) => {
+                    if(response.data.isSuccess == 0){
+                        this.patientList.splice(index)
+                        this.$message.success("删除成功！")
+                    }else{
+                        this.$message("删除失败！")
+                    }
+                }).catch((error) => {
+                    console.log("删除就诊人时出现错误！")
+                })
+        }).catch(() => {
+            console.log("已取消")
+        })
         },
         addPatient(){
             this.editVisible = true
@@ -230,14 +236,6 @@ export default {
 </script>
 
 <style scoped>
-.patient-manage-title-box{
-    height: 40px;
-    border-bottom: 1px solid #ddd;
-}
-.patient-manage-title-box > p{
-    text-align: center;
-    padding-top: 10px;
-}
 .add-patient-box{
     height: 60px;
     margin: 0 auto;

@@ -5,15 +5,15 @@ import store from './store'
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
-        show: false
+        isLogin: sessionStorage.getItem("login")
     },
     action,
     mutations: {
-        onOpen(state) {
-            state.show = false
+        Login(state) {
+            state.isLogin = true
         },
-      onClose(state) {
-            state.show = true
+        Logout(state) {
+            state.isLogin = false
         }
     },
     getters: {
