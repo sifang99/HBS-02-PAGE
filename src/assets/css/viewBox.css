@@ -52,9 +52,12 @@
 .patient-avatar{
     float: left;
     margin-left: 10px;
+    width: 10%;
+    height: 120px;
+    margin-top: 20px;
 }
 .operation{
     float: right;
     margin-right: 30px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }

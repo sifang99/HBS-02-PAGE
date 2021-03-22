@@ -184,9 +184,7 @@ export default {
             console.log(this.tableData)
         },
         submitSchedule(){
-            this.$refs['form'].validate((valid) => {
-                if(valid){
-                    var data = {
+             var data = {
                 dept:this.dept,
                 doctorNum: this.doctorNum,
                 schedules: this.tableData
@@ -195,18 +193,16 @@ export default {
                 this.$message("请添加数据！")
             }else{
                 this.$axios.post('/addNumberMessage', data)
-            .then((response) => {
-                if(response.data.isSuccess == 0){
-                    this.$message("添加成功！")
-                }else{
-                    this.$message("添加失败！")
-                }
-            }).catch((error) => {
-                this.$message("发生错误！")
-            })
+                .then((response) => {
+                    if(response.data.isSuccess == 0){
+                        this.$message("添加成功！")
+                    }else{
+                        this.$message("添加失败！")
+                    }
+                }).catch((error) => {
+                    this.$message("发生错误！")
+                })
             }
-                }
-            })
         },
         saveEdit(){
             this.$refs['form'].validate((valid) => {

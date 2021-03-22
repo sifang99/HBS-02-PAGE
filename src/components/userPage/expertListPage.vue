@@ -106,12 +106,9 @@ export default {
         this.$axios.get('/getFutureDate')
         .then((response) => {
             this.dateList = response.data
-            console.log("currentIndex：" + this.currentIndex)
             this.$axios.get('/getExperts', {params:{dept: this.dept, date: this.formDate(this.dateList[this.currentIndex])}})
             .then((response) => {
                 this.experts = response.data
-                console.log("experts: ")
-                console.log(response.data)
             }).catch((error) => {
                 this.$message("获取专家列表时发生错误！")
             })

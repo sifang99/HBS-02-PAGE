@@ -10,7 +10,7 @@
                 <div class="introduction-box">
                     <p class="introduction my-letter-style">{{this.dept.introduction}}</p>
                 </div>
-                <router-view :orderDate="date" @getDate="changeDate" :deptId="dept.id"></router-view>
+                <router-view :orderDate="date" @getDate="changeDate" :deptName="dept.name" :deptId="dept.id"></router-view>
             </div>
         </div>
         <div style="clear: both;"></div> 

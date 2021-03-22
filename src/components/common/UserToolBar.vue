@@ -19,9 +19,9 @@ export default {
         return{
             itemIndex: 0,
             barList:[
-                {
-                    title:'就诊信息'
-                },
+                // {
+                //     title:'就诊信息'
+                // },
                 {
                     title:'预约记录'
                 },
