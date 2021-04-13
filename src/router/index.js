@@ -114,6 +114,11 @@ export default new Router({
                     meta: {title: '修改号源'}
                 },
                 {
+                    path: '/stop',
+                    component: () => import('../components/page/StopTreatment.vue'),
+                    meta: {title: '停诊服务'}
+                },
+                {
                     path: '/deleteSchedule',
                     component: () => import('../components/page/DeleteSchedule.vue'),
                     meta: {title: '删除号源'}

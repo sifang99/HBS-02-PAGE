@@ -81,18 +81,19 @@ export default {
                         }
                     ]
                 },
-                {
-                    icon: 'el-icon-lx-copy',
-                    index: 'doctorManage',
-                    title: '医生管理',
-                },
+                
                 {
                     icon: 'el-icon-s-grid',
                     index: 'deptManage',
                     title: '科室管理',
                 },
                 {
-                    icon: 'el-icon-lx-calendar',
+                    icon: 'el-icon-user-solid',
+                    index: 'doctorManage',
+                    title: '医生管理',
+                },
+                {
+                    icon: 'el-icon-s-promotion',
                     index: '9',
                     title: '管理公告',
                     subs: [
@@ -105,6 +106,11 @@ export default {
                             title: '删除公告'
                         }
                     ]
+                },
+                {
+                    icon: 'el-icon-warning',
+                    index: 'stop',
+                    title: '停诊服务'
                 },
                 {
                     icon: 'el-icon-lx-cascades',

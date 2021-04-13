@@ -32,6 +32,7 @@
                             <label v-show="record.status == 1" style="color:blue;">退号中</label>
                             <label v-show="record.status == 2" style="color:blue;">退号成功</label>
                             <label v-show="record.status == 3" style="color:red;">停诊</label>
+                            <label v-show="record.status == 4" style="color:red;">过期</label>
                         </p>
                        
                     </span>
