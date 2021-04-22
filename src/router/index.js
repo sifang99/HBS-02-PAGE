@@ -38,6 +38,11 @@ export default new Router({
                     ]
                 },
                 {
+                    path:'/noticeDetail',
+                    component:() => import('../components/userPage/NoticeDetail.vue'),
+                    meta: {title: '公告详情'}
+                },
+                {
                     path:'/',
                     component: () => import('../components/userPage/deptIntroduction.vue'),
                     meta: {title: '科室详情页'},
@@ -122,6 +127,11 @@ export default new Router({
                     path: '/deleteSchedule',
                     component: () => import('../components/page/DeleteSchedule.vue'),
                     meta: {title: '删除号源'}
+                },
+                {
+                    path: '/check',
+                    component: () => import('../components/page/Check.vue'),
+                    meta: {title: '退号审核'}
                 },
                 {
                     path: '/tabs',

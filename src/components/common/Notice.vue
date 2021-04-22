@@ -5,22 +5,23 @@
         </div>
         <div class="notice-content infinite-list-wrapper" style="overflow:auto">
             <ul
-              class="list ul-blackground"
-              v-infinite-scroll="load"
-              infinite-scroll-disabled="disabled">
-                <li v-for="(i, index) in count" class="item-background list-item" :key="index">
+                class="list ul-blackground"
+                >
+                <li 
+                v-for="(i, index) in attentionList" 
+                class="item-background list-item" 
+                :key="index"
+                @click="getNotice(i)">
                     <i class="item-img el-icon-message-solid"></i>
                     <div :title="i.title" class="item-title-wrapper">
                       <p class="item-title">{{ i.title }}</p>
                     </div>
                     <div class="item-date-wrapper">
-                        <p class="item-date">{{ i.date }}</p>
+                        <p class="item-date">{{ i.publishDay }}</p>
                     </div>
                     <i class="item-arrow el-icon-arrow-right"></i>
                 </li>
             </ul>
-            <p v-if="loading">加载中...</p>
-            <p v-if="noMore">没有更多了</p>
         </div>
     </div>
 </template>
@@ -29,34 +30,25 @@
 export default {
     data () {
         return {
-          count:[],
-          loading: false
+          attentionList:[],
         }
       },
-    computed: {
-        noMore () {
-          return this.count >= 20
-        },
-        disabled () {
-          return this.loading || this.noMore
-        }
-    },
     created(){
-        var a = {
-            title:'关于系统维修的通告hsdjhbljdbsaaaaaacbhdjk vgh',
-            date:'2021-03-03'
-        }
-        for(var i = 0; i<20; i++){
-            this.count.push(a)
-        }
+        this.$axios.get('/getAttentionList')
+        .then((response) => {
+            this.attentionList = response.data
+        }).catch((error) => {
+            console.log("获取公告时发生错误！")
+        })
     },
     methods: {
-        load () {
-          this.loading = true
-          setTimeout(() => {
-            this.count += 2
-            this.loading = false
-          }, 2000)
+        getNotice(i){
+            this.$router.push({
+                path:'/noticeDetail',
+                query:{
+                    id: i.id
+                }
+            })
         }
     }
 }

@@ -22,9 +22,9 @@
             <li class="order-item" v-for="(item, index) in commentList"  :key="index">
                     <div class="comment-item">
                         <p class="comment-message">
-                            <label v-show="item.name != null" class="comment-name">{{ item.name }}</label>
-                            <label v-show="item.name === null" class="comment-name">匿名评价</label>
-                            <span class="comment-date">{{ item.date }}</span>
+                            <label v-show="item.writer != null" class="comment-name">{{ item.writer }}</label>
+                            <label v-show="item.writer === null" class="comment-name">匿名评价</label>
+                            <span class="comment-date">{{ item.commentDate }}</span>
                         </p>  
                         <p class="comment my-letter-style">{{item.comment}}</p>
                     </div>
@@ -48,34 +48,7 @@ export default {
                     speciality:'感冒发烧、头疼脑热',
                     introduction:'雕塑韩剧回才能下载聚hsdcu关于上的功夫关于的功夫遇到过v或多个佛偏旁部首保护及巴士和幅度分割被忽悠关于地方建设成本高于计划回到赛场不过v就好了与火箭夺冠发布预告国际化的干部实际汇率公布业绩蝴蝶飞不过集合了所有与几乎都是功夫家里还有的比赛将会复古集家大幅回调广泛用于并结合形成保护层v好像不错丶当初不会觉得从v吧v新城规划现在你粗话绝对不成都就是关于'
                 },
-            commentList:[
-                {
-                    name:null,
-                    date:'2017-02-14',
-                    comment:'活塞风格的预估获得三个词语'
-                },
-                {
-                    name:null,
-                    date:'2017-02-14',
-                    comment:'活塞风格的预估获得三个词语'
-                },
-                {
-                    name:null,
-                    date:'2017-05-10',
-                    comment:'和速度给发货dsu都告诉与法国VS都vu的官方预告对于v后进行初步比较好的效果粗我国橘黄色灯光计划时间合适就也会额的司法环境'
-                },
-                {
-                    name:null,
-                    date:'2017-08-19',
-                    comment:'活塞风格的预估获得三个词语'
-                },
-                {
-                    name:null,
-                    date:'2017-12-14',
-                    comment:'时代赋予归功于'
-                },
-
-            ]
+            commentList:[]
         }
     },
     created(){
@@ -84,6 +57,12 @@ export default {
             this.doctor = response.data
         }).catch((error) => {
             this.$message("获取医生详情失败！")
+        })
+        this.$axios.get("/getCommentsByDoctorNum", {params:{doctorNum:this.doctorNum}})
+        .then((response) => {
+            this.commentList = response.data
+        }).catch((error) => {
+            console.log("评价获取时发生错误")
         })
     }
 }

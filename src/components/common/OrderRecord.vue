@@ -33,6 +33,8 @@
                             <label v-show="record.status == 2" style="color:blue;">退号成功</label>
                             <label v-show="record.status == 3" style="color:red;">停诊</label>
                             <label v-show="record.status == 4" style="color:red;">过期</label>
+                            <label v-show="record.status == 5" style="color:red;">退号失败</label>
+
                         </p>
                        
                     </span>
@@ -55,6 +57,24 @@
 
             </li>
         </ul>
+
+            <!-- 编辑弹出框 -->
+        <el-dialog title="评价" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="form">
+                <el-form-item>
+                    <el-input 
+                    placeholder="最多输入200个字符" 
+                    maxlength="200" 
+                    type="textarea"
+                    :rows="4" 
+                    v-model="form.comment"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="cancel">取 消</el-button>
+                <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -64,7 +84,14 @@ export default {
         return{
             femaleAvatar:'../../assets/img/doctor-female-01.png',
             maleAvatar:'../../assets/img/doctor-male-01.png',
-            recordList:[]
+            recordList:[],
+            form:{
+                comment:'',
+                writer:'',
+                commentDate:'',
+                doctorNum:''
+            },
+            editVisible: false,
         }
     },
     methods:{
@@ -89,7 +116,43 @@ export default {
             })
         },
         recommend(record){
+            this.editVisible = true
+            this.form.doctorNum = record.doctorNum
+            this.form.writer = sessionStorage.getItem("userNickname")
+            this.form.commentDate = this.getDate() 
+        },
+        saveEdit(){
+            this.$axios.post('/addComment', this.form)
+            .then((response) => {
+                if(response.data.isSuccess == 0){
+                    this.$message.success("评价成功")
+                    this.editVisible = false
+                    this.form.comment = ""
+                }else{
+                    this.$message("评价失败")
+                }
+            }).catch((error)=>{
+                console.log("评价时出错")
+            }) 
             
+        },
+        cancel(){
+            this.editVisible = false
+        },
+        getDate(){
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            return currentdate;
         }
     },
     created(){

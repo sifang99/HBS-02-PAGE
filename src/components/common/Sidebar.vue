@@ -113,6 +113,11 @@ export default {
                     title: '停诊服务'
                 },
                 {
+                    icon: 'el-icon-s-help',
+                    index: 'check',
+                    title: '退号审核'
+                },
+                {
                     icon: 'el-icon-lx-cascades',
                     index: 'table',
                     title: '基础表格'

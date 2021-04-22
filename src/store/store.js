@@ -8,7 +8,7 @@ export default new Vuex.Store({
         isLogin: sessionStorage.getItem("login"),
         userId: sessionStorage.getItem("userId"),
         userNickname: sessionStorage.getItem("userNickname"),
-        userTel: sessionStorage.getItem("userTel",)
+        userTel: sessionStorage.getItem("userTel"),
     },
     action,
     mutations: {
@@ -17,7 +17,7 @@ export default new Vuex.Store({
         },
         Logout(state) {
             state.isLogin = false
-        }
+        },
     },
     getters: {
 
