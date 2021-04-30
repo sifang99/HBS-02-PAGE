@@ -121,6 +121,9 @@ export default{
                     sessionStorage.setItem("userNickname", response.data.user.nickname)
                     sessionStorage.setItem("userTel", response.data.user.tel)
                     sessionStorage.setItem("userId", response.data.user.id)
+                    localStorage.setItem("tokenId", response.data.tokenId)
+                    // console.log("token: ")
+                    // console.log(localStorage.getItem("tokenId"))
                     // this.$router.go(0);
                     this.login = sessionStorage.getItem("login")
                     this.$store.commit('Login')

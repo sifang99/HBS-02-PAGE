@@ -7,6 +7,9 @@
             <div class="title">
                 <p class="name">第 X X X X X 人 民 医 院</p>
             </div>
+            <div style="float:right; margin-right:5%">
+                <el-button v-show="! $store.state.isLogin" @click="getLoginPage" type="text" style="color:white">工作人员登录</el-button>
+            </div>
             <div style="clear:both;"></div>
         </div>
         <div v-show="$store.state.isLogin" class="tool-bar-box">
@@ -54,6 +57,9 @@ export default {
             }else{
                 this.$router.push('/firstPage')
             }
+        },
+        getLoginPage(){
+            this.$router.push('/login')
         }
     }
 }

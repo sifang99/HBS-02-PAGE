@@ -52,9 +52,16 @@ export default {
                     cancelButtonText: '取消',
                     type:'warning'
                 }).then(() => {
-                    sessionStorage.clear()
-                    this.$store.commit('Logout')
-                    this.$router.push('/firstPage');
+                    this.$axios.get('/userLogout')
+                    .then((response) => {
+                        console.log("退出登录成功！")
+                        sessionStorage.clear()
+                        this.$store.commit('Logout')
+                        this.$router.push('/firstPage');
+                    }).catch((error) => {
+                        this.$message("退出登录时，发生错误！")
+                    })
+                    
                 }).catch(() => {
                     console.log("已取消退出登录")
                 })

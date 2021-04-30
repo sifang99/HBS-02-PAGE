@@ -3,16 +3,16 @@
         <div class="ms-login">
             <div class="ms-title">后台管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
+                <el-form-item prop="num">
+                    <el-input v-model="param.num" placeholder="账号">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
+                <el-form-item prop="pwd">
                     <el-input
                         type="password"
-                        placeholder="password"
-                        v-model="param.password"
+                        placeholder="密码"
+                        v-model="param.pwd"
                         @keyup.enter.native="submitForm()"
                     >
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
@@ -21,7 +21,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips">Tips : 输入正确的账号和密码</p>
             </el-form>
         </div>
     </div>
@@ -32,12 +32,12 @@ export default {
     data: function() {
         return {
             param: {
-                username: 'admin',
-                password: '123123',
+                num: '',
+                pwd: '',
             },
             rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+                num: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+                pwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
             },
         };
     },
@@ -45,9 +45,22 @@ export default {
         submitForm() {
             this.$refs.login.validate(valid => {
                 if (valid) {
-                    this.$message.success('登录成功');
-                    localStorage.setItem('ms_username', this.param.username);
-                    this.$router.push('/dashboard');
+
+                    this.$axios.post('/workerLogin', this.param)
+                    .then((response) => {
+                        if(response.data.isLogin){
+                            this.$message.success("登陆成功！")
+                            this.$router.push('/dashboard');
+                            localStorage.setItem("tokenId", response.data.tokenId)
+                            this.$store.commit('AdminLogin')
+                            sessionStorage.setItem("adminName", response.data.adminName),
+                            sessionStorage.setItem("adminRole", response.data.adminRole)
+                        }else{
+                            this.$message(response.data.message)
+                        }
+                    }).catch((error) => {
+                        this.$message("登陆失败！")
+                    })
                 } else {
                     this.$message.error('请输入账号和密码');
                     console.log('error submit!!');

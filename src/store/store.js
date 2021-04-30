@@ -9,6 +9,9 @@ export default new Vuex.Store({
         userId: sessionStorage.getItem("userId"),
         userNickname: sessionStorage.getItem("userNickname"),
         userTel: sessionStorage.getItem("userTel"),
+        adminLogin: sessionStorage.getItem("adminLogin"),
+        adminName: sessionStorage.getItem("adminName"),
+        adminRole: sessionStorage.getItem("adminRole")
     },
     action,
     mutations: {
@@ -18,6 +21,12 @@ export default new Vuex.Store({
         Logout(state) {
             state.isLogin = false
         },
+        AdminLogin(state){
+            state.adminLogin = true
+        },
+        AdminLogout(state){
+            state.adminLogin = false
+        }
     },
     getters: {
 
